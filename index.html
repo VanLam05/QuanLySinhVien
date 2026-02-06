@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản Lý Sinh Viên</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Quản Lý Sinh Viên</h1>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Thông tin sinh viên</h2>
+      <form id="studentForm">
+        <div class="field">
+          <label for="studentId">Mã sinh viên</label>
+          <input id="studentId" name="studentId" placeholder="VD: SV001" required />
+        </div>
+        <div class="field">
+          <label for="fullName">Họ và tên</label>
+          <input id="fullName" name="fullName" placeholder="VD: Nguyễn Văn A" required />
+        </div>
+        <div class="field">
+          <label for="dob">Ngày sinh</label>
+          <input id="dob" name="dob" type="date" required />
+        </div>
+        <div class="field">
+          <label for="className">Lớp học</label>
+          <input id="className" name="className" placeholder="VD: K15CNTT1" required />
+        </div>
+        <div class="field">
+          <label for="gpa">Điểm GPA</label>
+          <input id="gpa" name="gpa" type="number" step="0.01" min="0" max="4" placeholder="0.00 - 4.00" required />
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary" id="submitBtn">Thêm sinh viên</button>
+          <button type="button" class="btn-secondary" id="resetBtn">Làm mới</button>
+          <button type="button" class="btn-outline" id="seedBtn">Dữ liệu mẫu</button>
+        </div>
+        <div id="formNotice" class="notice"></div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Danh sách sinh viên</h2>
+      <div class="summary">
+        <div class="tile">
+          <h3>Tổng số</h3>
+          <p id="totalCount">0</p>
+        </div>
+        <div class="tile">
+          <h3>GPA trung bình</h3>
+          <p id="avgGpa">0.00</p>
+        </div>
+        <div class="tile">
+          <h3>GPA cao nhất</h3>
+          <p id="maxGpa">0.00</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input class="search" id="searchInput" placeholder="Tìm theo mã SV hoặc họ tên..." />
+        <button type="button" class="btn-download" id="downloadBtn">⬇ Tải xuống</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable" data-field="id">
+              <span>Mã SV</span>
+              <span class="sort-icons">
+                <button class="sort-btn" data-field="id" data-order="asc" title="A → Z">▲</button>
+                <button class="sort-btn" data-field="id" data-order="desc" title="Z → A">▼</button>
+              </span>
+            </th>
+            <th class="sortable" data-field="name">
+              <span>Họ tên</span>
+              <span class="sort-icons">
+                <button class="sort-btn" data-field="name" data-order="asc" title="A → Z">▲</button>
+                <button class="sort-btn" data-field="name" data-order="desc" title="Z → A">▼</button>
+              </span>
+            </th>
+            <th class="sortable" data-field="dob">
+              <span>Ngày sinh</span>
+              <span class="sort-icons">
+                <button class="sort-btn" data-field="dob" data-order="asc" title="Cũ → Mới">▲</button>
+                <button class="sort-btn" data-field="dob" data-order="desc" title="Mới → Cũ">▼</button>
+              </span>
+            </th>
+            <th class="sortable" data-field="className">
+              <span>Lớp</span>
+              <span class="sort-icons">
+                <button class="sort-btn" data-field="className" data-order="asc" title="A → Z">▲</button>
+                <button class="sort-btn" data-field="className" data-order="desc" title="Z → A">▼</button>
+              </span>
+            </th>
+            <th class="sortable" data-field="gpa">
+              <span>GPA</span>
+              <span class="sort-icons">
+                <button class="sort-btn" data-field="gpa" data-order="asc" title="Thấp → Cao">▲</button>
+                <button class="sort-btn" data-field="gpa" data-order="desc" title="Cao → Thấp">▼</button>
+              </span>
+            </th>
+            <th class="th-action">Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="studentTable">
+          <tr>
+            <td colspan="6" class="empty">Chưa có dữ liệu. Hãy thêm sinh viên đầu tiên!</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
