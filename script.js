@@ -49,6 +49,31 @@ let editingId = null;
 // Trạng thái sắp xếp hiện tại
 let currentSort = { field: null, order: null };
 
+// Lưu dữ liệu vào localStorage
+const saveToLocalStorage = () => {
+  const data = students.map((s) => ({
+    id: s.id,
+    name: s.name,
+    dob: s.dob,
+    className: s.className,
+    gpa: s.gpa
+  }));
+  localStorage.setItem("students", JSON.stringify(data));
+};
+
+// Tải dữ liệu từ localStorage
+const loadFromLocalStorage = () => {
+  const data = localStorage.getItem("students");
+  if (data) {
+    try {
+      const parsed = JSON.parse(data);
+      students = parsed.map((s) => new Student(s));
+    } catch (e) {
+      students = [];
+    }
+  }
+};
+
 // Hiển thị thông báo
 const showNotice = (message, type = "success") => {
   notice.textContent = message;
@@ -274,6 +299,7 @@ const addStudent = (data) => {
     return;
   }
   students.push(new Student(data));
+  saveToLocalStorage();
   showNotice("Đã thêm sinh viên thành công!");
   resetForm();
   render();
@@ -287,6 +313,7 @@ const updateStudent = (data) => {
     return;
   }
   student.update(data);
+  saveToLocalStorage();
   showNotice("Cập nhật thông tin thành công!");
   resetForm();
   render();
@@ -352,6 +379,7 @@ seedBtn.addEventListener("click", () => {
       gpa: 3.91,
     }),
   ];
+  saveToLocalStorage();
   render();
   showNotice("Đã thêm dữ liệu mẫu!");
 });
@@ -402,6 +430,7 @@ tableBody.addEventListener("click", (event) => {
     );
     if (!confirmDelete) return;
     students = students.filter((s) => s.id !== id);
+    saveToLocalStorage();
     render();
     showNotice("Đã xóa sinh viên.");
   }
@@ -446,4 +475,5 @@ downloadBtn.addEventListener("click", () => {
 });
 
 // Khởi tạo giao diện
+loadFromLocalStorage();
 render();
